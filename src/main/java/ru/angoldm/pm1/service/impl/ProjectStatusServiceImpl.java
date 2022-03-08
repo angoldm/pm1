@@ -39,6 +39,14 @@ public class ProjectStatusServiceImpl implements ProjectStatusService {
     }
 
     @Override
+    public ProjectStatusDto updateProjectStatus(ProjectStatusDto projectStatusDto, Long id) {
+        if (!projectStatusRepository.existsById(id)) throw new ProjectStatusIdNotFoundException(id);
+        ProjectStatus projectStatus = projectStatusMapper.toEntity(projectStatusDto);
+        projectStatus.setId(id);
+        return projectStatusMapper.toDto(projectStatusRepository.save(projectStatus));
+    }
+
+    @Override
     public void delete(Long id) {
         ProjectStatus projectStatus = projectStatusRepository.findById(id)
                 .orElseThrow(() -> new ProjectStatusIdNotFoundException(id));

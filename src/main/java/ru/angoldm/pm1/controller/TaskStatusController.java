@@ -44,11 +44,20 @@ public class TaskStatusController {
     }
 
     @Operation(
+            summary = "Редактирование существующего статуса задачи",
+            description = "Позволяет изменить данные о статусе задачи с идентификатором id"
+    )
+    @PutMapping("/{id}")
+    public ResponseEntity<TaskStatusDto> updateTaskStatus(@RequestBody TaskStatusDto taskStatusDto, @PathVariable @Parameter(description = "Идентификатор статуса задачи") Long id) {
+        return ResponseEntity.ok(taskStatusService.updateTaskStatus(taskStatusDto, id));
+    }
+
+    @Operation(
             summary = "Удаление статуса задачи",
             description = "Позволяет удалить запись о статусе задачи по ее идентификатору"
     )
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable @Parameter(description = "Идентификатор проекта") Long id) {
+    public ResponseEntity<String> delete(@PathVariable @Parameter(description = "Идентификатор статуса задачи") Long id) {
         taskStatusService.delete(id);
         return ResponseEntity.ok(format("Статус задачи с идентификатором %d удален", id));
     }

@@ -1,6 +1,7 @@
 package ru.angoldm.pm1.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -43,11 +44,20 @@ public class BoardController {
     }
 
     @Operation(
+            summary = "Редактирование существующей доски задач",
+            description = "Позволяет изменить данные о доске задач с идентификатором id"
+    )
+    @PutMapping("/{id}")
+    public ResponseEntity<BoardDto> updateBoard(@RequestBody BoardDto boardDto, @PathVariable @Parameter(description = "Идентификатор доски задач") Long id) {
+        return ResponseEntity.ok(boardService.updateBoard(boardDto, id));
+    }
+
+    @Operation(
             summary = "Удаление доски задач",
             description = "Позволяет удалить запись о доске задач по ее идентификатору"
     )
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable Long id) {
+    public ResponseEntity<String> delete(@PathVariable @Parameter(description = "Идентификатор доски задач") Long id) {
         boardService.delete(id);
         return ResponseEntity.ok(format("Доска с идентификатором %d удалена", id));
     }

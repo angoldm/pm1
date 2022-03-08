@@ -44,6 +44,15 @@ public class UserController {
     }
 
     @Operation(
+            summary = "Редактирование существующего пользователя",
+            description = "Позволяет изменить данные о пользователе с идентификатором id"
+    )
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto, @PathVariable @Parameter(description = "Идентификатор пользователя") Long id) {
+        return ResponseEntity.ok(userService.updateUser(userDto, id));
+    }
+
+    @Operation(
             summary = "Удаление пользователя",
             description = "Позволяет удалить запись о пользователе по его идентификатору"
     )

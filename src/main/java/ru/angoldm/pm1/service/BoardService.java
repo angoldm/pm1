@@ -9,5 +9,7 @@ public interface BoardService {
 
     List<BoardDto> findAll();
 
+    BoardDto updateBoard(BoardDto boardDto, Long id);
+
     void delete(Long id);
 }
