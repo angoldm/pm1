@@ -1,12 +1,16 @@
 package ru.angoldm.pm1.controller.advice;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.angoldm.pm1.exception.AppException;
+
+import java.net.ConnectException;
+
+import static java.lang.String.format;
 
 @RestControllerAdvice
 public class AbstractRestController {
@@ -16,8 +20,18 @@ public class AbstractRestController {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<String> conflict(DataIntegrityViolationException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+    @ExceptionHandler(ConnectException.class)
+    public ResponseEntity<String> conflict(ConnectException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.SERVICE_UNAVAILABLE);//503
     }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<String> conflict(ConstraintViolationException e) {
+        return new ResponseEntity<>(format("%s \n%s", e.getCause(), e.getMessage()), HttpStatus.CONFLICT);//409
+    }
+
+    /*@ExceptionHandler(DataIntegrityViolationException.class) //менее информативное, чем ConstraintViolationException
+    public ResponseEntity<String> conflict(DataIntegrityViolationException e) {
+        return new ResponseEntity<>(format("%s \n%s", e.getCause(), e.getMessage()), HttpStatus.CONFLICT);//409
+    }*/
 }
