@@ -21,17 +21,17 @@ public class AbstractRestController {
     }
 
     @ExceptionHandler(ConnectException.class)
-    public ResponseEntity<String> conflict(ConnectException e) {
+    public ResponseEntity<String> handleConnectException(ConnectException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.SERVICE_UNAVAILABLE);//503
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<String> conflict(ConstraintViolationException e) {
+    public ResponseEntity<String> handleConstraintException(ConstraintViolationException e) {
         return new ResponseEntity<>(format("%s \n%s", e.getCause(), e.getMessage()), HttpStatus.CONFLICT);//409
     }
 
     /*@ExceptionHandler(DataIntegrityViolationException.class) //менее информативное, чем ConstraintViolationException
-    public ResponseEntity<String> conflict(DataIntegrityViolationException e) {
+    public ResponseEntity<String> handleDataIntegrityException(DataIntegrityViolationException e) {
         return new ResponseEntity<>(format("%s \n%s", e.getCause(), e.getMessage()), HttpStatus.CONFLICT);//409
     }*/
 }
