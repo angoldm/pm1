@@ -9,5 +9,7 @@ public interface TaskService {
 
     List<TaskDto> findAll();
 
+    TaskDto updateTask(TaskDto taskDto, Long id);
+
     void delete(Long id);
 }

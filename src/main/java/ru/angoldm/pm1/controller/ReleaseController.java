@@ -44,6 +44,15 @@ public class ReleaseController {
     }
 
     @Operation(
+            summary = "Редактирование существующего релиза задачи",
+            description = "Позволяет изменить данные о релизе задачи с идентификатором id"
+    )
+    @PutMapping("/{id}")
+    public ResponseEntity<ReleaseDto> updateRelease(@RequestBody ReleaseDto releaseDto, @PathVariable @Parameter(description = "Идентификатор релиза") Long id) {
+        return ResponseEntity.ok(releaseService.updateRelease(releaseDto, id));
+    }
+
+    @Operation(
             summary = "Удаление релиза",
             description = "Позволяет удалить запись о релизе задачи по его идентификатору"
     )

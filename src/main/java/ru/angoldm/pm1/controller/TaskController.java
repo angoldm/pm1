@@ -1,6 +1,7 @@
 package ru.angoldm.pm1.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -43,11 +44,20 @@ public class TaskController {
     }
 
     @Operation(
+            summary = "Редактирование существующей задачи",
+            description = "Позволяет изменить данные о задаче с идентификатором id"
+    )
+    @PutMapping("/{id}")
+    public ResponseEntity<TaskDto> updateTask(@RequestBody TaskDto taskDto, @PathVariable @Parameter(description = "Идентификатор задачи") Long id) {
+        return ResponseEntity.ok(taskService.updateTask(taskDto, id));
+    }
+
+    @Operation(
             summary = "Удаление задачи",
             description = "Позволяет удалить запись о задаче по ее идентификатору"
     )
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable Long id) {
+    public ResponseEntity<String> delete(@PathVariable @Parameter(description = "Идентификатор задачи") Long id) {
         taskService.delete(id);
         return ResponseEntity.ok(format("Задача с идентификатором %d удалена", id));
     }

@@ -39,6 +39,14 @@ public class ReleaseServiceImpl implements ReleaseService {
     }
 
     @Override
+    public ReleaseDto updateRelease(ReleaseDto releaseDto, Long id) {
+        if (!releaseRepository.existsById(id)) throw new ReleaseIdNotFoundException(id);
+        Release release = releaseMapper.toEntity(releaseDto);
+        release.setId(id);
+        return releaseMapper.toDto(releaseRepository.save(release));
+    }
+
+    @Override
     public void delete(Long id) {
         Release release = releaseRepository.findById(id)
                 .orElseThrow(() -> new ReleaseIdNotFoundException(id));

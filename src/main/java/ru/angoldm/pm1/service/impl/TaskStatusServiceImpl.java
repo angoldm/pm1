@@ -2,8 +2,11 @@ package ru.angoldm.pm1.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.angoldm.pm1.dto.ProjectDto;
 import ru.angoldm.pm1.dto.TaskStatusDto;
+import ru.angoldm.pm1.entity.Project;
 import ru.angoldm.pm1.entity.TaskStatus;
+import ru.angoldm.pm1.exception.ProjectIdNotFoundException;
 import ru.angoldm.pm1.exception.TaskStatusIdNotFoundException;
 import ru.angoldm.pm1.repository.TaskStatusRepository;
 import ru.angoldm.pm1.service.TaskStatusService;
@@ -36,6 +39,14 @@ public class TaskStatusServiceImpl implements TaskStatusService {
                 .stream()
                 .map((taskStatusMapper::toDto))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public TaskStatusDto updateTaskStatus(TaskStatusDto taskStatusDto, Long id) {
+        if (!taskStatusRepository.existsById(id)) throw new TaskStatusIdNotFoundException(id);
+        TaskStatus taskStatus = taskStatusMapper.toEntity(taskStatusDto);
+        taskStatus.setId(id);
+        return taskStatusMapper.toDto(taskStatusRepository.save(taskStatus));
     }
 
     @Override

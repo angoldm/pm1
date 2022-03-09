@@ -44,6 +44,15 @@ public class ProjectStatusController {
     }
 
     @Operation(
+            summary = "Редактирование существующего статуса проекта",
+            description = "Позволяет изменить данные о статусе проекта с идентификатором id"
+    )
+    @PutMapping("/{id}")
+    public ResponseEntity<ProjectStatusDto> updateProjectStatus(@RequestBody ProjectStatusDto projectStatusDto, @PathVariable @Parameter(description = "Идентификатор статуса") Long id) {
+        return ResponseEntity.ok(projectStatusService.updateProjectStatus(projectStatusDto, id));
+    }
+
+    @Operation(
             summary = "Удаление статуса проекта",
             description = "Позволяет удалить запись о статусе по его идентификатору"
     )

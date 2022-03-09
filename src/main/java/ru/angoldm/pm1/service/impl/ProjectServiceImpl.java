@@ -39,6 +39,14 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public ProjectDto updateProject(ProjectDto projectDto, Long id) {
+        if (!projectRepository.existsById(id)) throw new ProjectIdNotFoundException(id);
+        Project project = projectMapper.toEntity(projectDto);
+        project.setId(id);
+        return projectMapper.toDto(projectRepository.save(project));
+    }
+
+    @Override
     public void delete(Long id) {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new ProjectIdNotFoundException(id));

@@ -9,5 +9,7 @@ public interface ReleaseService {
 
     List<ReleaseDto> findAll();
 
+    ReleaseDto updateRelease(ReleaseDto releaseDto, Long id);
+
     void delete(Long id);
 }

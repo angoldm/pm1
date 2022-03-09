@@ -39,6 +39,14 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    public BoardDto updateBoard(BoardDto boardDto, Long id) {
+        if (!boardRepository.existsById(id)) throw new BoardIdNotFoundException(id);
+        Board board = boardMapper.toEntity(boardDto);
+        board.setId(id);
+        return boardMapper.toDto(boardRepository.save(board));
+    }
+
+    @Override
     public void delete(Long id) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new BoardIdNotFoundException(id));

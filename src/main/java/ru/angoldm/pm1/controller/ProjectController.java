@@ -2,15 +2,11 @@ package ru.angoldm.pm1.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.http.ResponseEntity;
 import ru.angoldm.pm1.dto.ProjectDto;
 import ru.angoldm.pm1.service.ProjectService;
@@ -47,6 +43,15 @@ public class ProjectController {
     @GetMapping
     public ResponseEntity<List<ProjectDto>> findAll() {
         return ResponseEntity.ok(projectService.findAll());
+    }
+
+    @Operation(
+            summary = "Редактирование существующего проекта",
+            description = "Позволяет изменить данные о проекте с идентификатором id"
+    )
+    @PutMapping("/{id}")
+    public ResponseEntity<ProjectDto> updateProject(@RequestBody ProjectDto projectDto, @PathVariable @Parameter(description = "Идентификатор проекта") Long id) {
+        return ResponseEntity.ok(projectService.updateProject(projectDto, id));
     }
 
     @Operation(

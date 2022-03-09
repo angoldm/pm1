@@ -9,5 +9,7 @@ public interface ProjectService {
 
     List<ProjectDto> findAll();
 
+    ProjectDto updateProject(ProjectDto projectDto, Long id);
+
     void delete(Long id);
 }

@@ -9,5 +9,7 @@ public interface ProjectStatusService {
 
     List<ProjectStatusDto> findAll();
 
+    ProjectStatusDto updateProjectStatus (ProjectStatusDto projectStatusDto, Long id);
+
     void delete(Long id);
 }
